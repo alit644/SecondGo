@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import LogoutButton from "@/components/LogoutButton";
-
+// start logic 
 const Page = async () => {
   const session = await auth();
   return (
