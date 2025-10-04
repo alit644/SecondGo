@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
-import { Poppins , Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
-
-
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-const poppins = Poppins({
- variable: "--font-poppins",
- subsets: ["latin"],
- weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
@@ -39,19 +32,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={` ${inter.variable} antialiased`}
-      >
+      <body className={` ${inter.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main className="container mx-auto px-4">{children}</main>
-          <Footer />
-          <Toaster />
+          <SessionProvider>
+            <div className="relative z-[100]">
+              <Header />
+            </div>
+            <main className="container mx-auto px-4">{children}</main>
+            <Footer />
+            <Toaster />
+          </SessionProvider>
         </ThemeProvider>
       </body>
     </html>

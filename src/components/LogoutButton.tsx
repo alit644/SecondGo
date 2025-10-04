@@ -2,15 +2,14 @@
 import { signOutAction } from "@/actions/auth-action";
 import React from "react";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
 
 const LogoutButton = () => {
- const router = useRouter();
- const handleLogout = async () => {
+ const handleLogout = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
   try {
   const res =  await signOutAction();
   if (res.success) {
-   router.push("/");
+   window.location.href = "/";
   }
   } catch (error) {
    console.log(error);

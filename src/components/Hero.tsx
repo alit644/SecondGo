@@ -44,7 +44,7 @@ const Hero = () => {
       <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-10 px-6 py-16 md:py-20 lg:flex-row lg:gap-14">
         {/* Left: copy */}
         <div className="flex-1 text-center lg:text-start">
-          <h1 className="mx-auto max-w-2xl bg-gradient-to-br from-indigo-700 via-fuchsia-600 to-cyan-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent sm:text-4xl md:text-5xl dark:from-indigo-300 dark:via-fuchsia-300 dark:to-cyan-300">
+          <h1 className="mx-auto max-w-2xl bg-gradient-to-br from-indigo-700 via-fuchsia-600 to-cyan-600 bg-clip-text text-2xl font-extrabold tracking-tight text-transparent sm:text-4xl md:text-5xl dark:from-indigo-600 dark:via-fuchsia-500 dark:to-cyan-500">
             Explore the Marketplace. Buy, Sell, and Trade with Confidence{" "}
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-balance text-sm text-muted-foreground sm:text-base">
@@ -55,12 +55,16 @@ const Hero = () => {
           <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
             <Link
               href="/explore"
+              aria-label="explore marketplace"
+              title="explore marketplace"
               className="inline-flex items-center justify-center rounded-full bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 dark:bg-indigo-500 dark:hover:bg-indigo-600"
             >
               Explore Marketplace Now
             </Link>
             <Link
               href="/sell"
+              aria-label="sell product"
+              title="sell product"
               className="inline-flex items-center justify-center rounded-full border border-foreground/15 bg-white/60 px-5 py-2.5 text-sm font-medium text-foreground backdrop-blur transition hover:bg-white/80 dark:bg-white/5 dark:text-white"
             >
               Start Selling Today

@@ -100,7 +100,9 @@ export const signInAction = async (
 
 export const signOutAction = async (): Promise<AuthResponse> => {
   try {
-    await signOut();
+    await signOut({
+      redirect: false,
+    });
     return { success: true, message: "Success Sign Out" };
   } catch (error: any) {
     return {
