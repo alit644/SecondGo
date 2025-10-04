@@ -29,7 +29,7 @@ const itemVariant = {
 
 const Benefits = () => {
   return (
-    <section className="relative mx-auto my-10 w-full px-6">
+    <section className="relative mx-auto my-6 w-full px-6">
       {/* soft background */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-1/2 top-0 h-64 w-[70%] -translate-x-1/2 rounded-[40px] bg-gradient-to-b from-indigo-400/10 via-fuchsia-300/10 to-cyan-300/10 blur-2xl" />

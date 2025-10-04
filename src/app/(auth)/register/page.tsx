@@ -1,6 +1,8 @@
 import RegisterForm from "@/components/RegisterForm";
 import { BackgroundRippleEffect } from "@/components/ui/background-ripple-effect";
 import { Metadata } from "next";
+export const dynamic = "force-static";
+
 export const metadata: Metadata = {
   title: "SecondGo - Register",
   description: "Register to your account",

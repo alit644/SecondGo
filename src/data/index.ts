@@ -46,11 +46,11 @@ export const navLinks = [
   label: "Home",
  },
  {
-  href: "/",
+  href: "/explore",
   label: "Explore",
  },
  {
-  href: "/",
+  href: "/categories",
   label: "Categories",
  }
 ]

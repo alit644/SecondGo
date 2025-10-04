@@ -10,7 +10,7 @@ import Link from "next/link";
 const Header = async () => {
   const session = await auth();
   return (
-    <section className="flex items-center justify-between shadow-md  border-b border-input px-4 h-16 ">
+    <section className="flex z-50 items-center justify-between shadow-md  border-b border-input px-4 h-16 ">
       {/* logo */}
       <Logo />
       {/* search */}
