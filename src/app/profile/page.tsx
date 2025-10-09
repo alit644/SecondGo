@@ -1,24 +1,26 @@
 import { auth } from "@/auth";
-import LogoutButton from "@/components/LogoutButton";
-// start logic 
-const Page = async () => {
+import BecomeSellerSection from "@/components/BecomeSellerSection";
+import { redirect } from "next/navigation";
+
+const ProfilePage = async () => {
   const session = await auth();
+
+  if (!session?.user) {
+    redirect("/login");
+  }
+
+  const user = session.user;
+
+  // Mock data for demonstration
+
   return (
-    <div>
-      <div className="flex justify-between align-center p-4 border-b border-input">
-        <div>
-          <p>
-            Hi,{" "}
-            {session?.user?.name ||
-              `${session?.user?.firstName} ${session?.user?.lastName}`}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <LogoutButton />
-        </div>
+    <div className="min-h-screen  py-4">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Main Content Tabs */}
+        <BecomeSellerSection />
       </div>
     </div>
   );
 };
 
-export default Page;
+export default ProfilePage;
