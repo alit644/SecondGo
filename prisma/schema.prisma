@@ -9,6 +9,7 @@ datasource db {
 
 enum Role {
  USER
+ SALLER
  ADMIN
 }
 
@@ -48,4 +49,13 @@ model User {
  accounts      Account[]
 
  @@map("users")
+}
+
+model VerificationToken {
+ id      String   @id @default(cuid())
+ email   String
+ token   String   @unique
+ expires DateTime
+ @@unique([email, token])
+ @@map("verification_tokens")
 }

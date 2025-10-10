@@ -17,7 +17,10 @@ const ProfilePage = async () => {
     <div className="min-h-screen  py-4">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Main Content Tabs */}
-        <BecomeSellerSection />
+        {user.role === "USER" && (
+          <BecomeSellerSection email={user.email || ""} />
+        )}
+        <p className="text-center text-muted-foreground"> No Products Found </p>
       </div>
     </div>
   );
