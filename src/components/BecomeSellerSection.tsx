@@ -11,7 +11,6 @@ import {
   ShoppingCart,
   Store,
 } from "lucide-react";
-import Link from "next/link";
 import { Button } from "./ui/button";
 import { useState } from "react";
 import { sendMail } from "@/utils/SendMail";

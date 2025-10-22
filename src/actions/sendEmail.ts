@@ -16,6 +16,7 @@ interface IEmail {
  subject: string,
  msg: string,
 }
+//TODO : use google and SMTP  
 export const sendEmail = async ({ email, subject, msg }: IEmail) => {
  if (!email || !subject || !msg) throw new Error("Missing fields");
  await transporter.sendMail({
