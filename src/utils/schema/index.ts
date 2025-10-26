@@ -37,6 +37,7 @@ export const listingSchema = z.object({
     .min(10, "Description must be at least 10 characters long")
     .max(1000, "Description must be at most 1000 characters long"),
   category: z.string({ error: "Category is required" }),
+  //TODO : خطأ عند تحديد نوع السعر 
   price: z.coerce.number({ error: "Price is required" })
     .min(1, "Price must be at least 1")
     .max(1000000, "Price must be at most 1000000"),

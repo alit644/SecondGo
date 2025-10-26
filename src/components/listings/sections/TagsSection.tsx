@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 
@@ -61,6 +61,7 @@ const TagsSection = ({ form }: { form: any }) => {
           ))}
         </div>
         <Input
+        disabled={form.formState.isSubmitting}
           placeholder="Add tags (press Enter to add)"
           value={tagInput}
           onChange={(e) => setTagInput(e.target.value)}
@@ -76,4 +77,4 @@ const TagsSection = ({ form }: { form: any }) => {
   );
 };
 
-export default TagsSection;
+export default memo(TagsSection)

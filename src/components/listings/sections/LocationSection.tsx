@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { memo } from "react";
 const LocationSection = ({ form }: { form: any }) => {
   return (
     <div className="space-y-4">
@@ -27,6 +28,7 @@ const LocationSection = ({ form }: { form: any }) => {
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <FormControl>
                 <Input
+                  disabled={form.formState.isSubmitting}
                   placeholder="Enter location"
                   className="pl-10 h-12"
                   {...field}
@@ -52,6 +54,7 @@ const LocationSection = ({ form }: { form: any }) => {
                 <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <FormControl>
                   <Input
+                    disabled={form.formState.isSubmitting}
                     placeholder="+1 (___) ___-____"
                     className="pl-10 h-12"
                     {...field}
@@ -72,6 +75,7 @@ const LocationSection = ({ form }: { form: any }) => {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <FormControl>
                   <Input
+                    disabled={form.formState.isSubmitting}
                     type="email"
                     placeholder="your@email.com"
                     className="pl-10 h-12"
@@ -88,4 +92,4 @@ const LocationSection = ({ form }: { form: any }) => {
   );
 };
 
-export default LocationSection;
+export default memo(LocationSection);

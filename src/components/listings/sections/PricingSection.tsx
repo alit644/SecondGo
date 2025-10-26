@@ -39,6 +39,7 @@ const PricingSection = ({ form }: { form: any }) => {
                 </span>
                 <FormControl>
                   <Input
+                    disabled={form.formState.isSubmitting}
                     type="number"
                     placeholder="0.00"
                     className="pl-8 h-12"
@@ -59,6 +60,7 @@ const PricingSection = ({ form }: { form: any }) => {
               <FormLabel>Condition *</FormLabel>
               <FormControl>
                 <MSelect
+                  disabled={form.formState.isSubmitting}
                   options={conditionOptions}
                   placeholder="Select condition"
                   value={field.value}
@@ -83,7 +85,11 @@ const PricingSection = ({ form }: { form: any }) => {
               </FormDescription>
             </div>
             <FormControl>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                checked={field.value}
+                onCheckedChange={field.onChange}
+                disabled={form.formState.isSubmitting}
+              />
             </FormControl>
           </FormItem>
         )}

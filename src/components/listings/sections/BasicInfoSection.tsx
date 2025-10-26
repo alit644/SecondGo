@@ -18,7 +18,7 @@ const categoryOptions = [
   { value: "clothing", label: "Clothing" },
   { value: "vehicles", label: "Vehicles" },
   { value: "services", label: "Services" },
-  {value:"other", label:"Other"}
+  { value: "other", label: "Other" },
 ];
 const BasicInfoSection = ({ form }: { form: any }) => {
   return (
@@ -36,6 +36,7 @@ const BasicInfoSection = ({ form }: { form: any }) => {
               <FormLabel>Title *</FormLabel>
               <FormControl>
                 <Input
+                  disabled={form.formState.isSubmitting}
                   placeholder="Enter listing title"
                   {...field}
                   className="h-12"
@@ -53,6 +54,7 @@ const BasicInfoSection = ({ form }: { form: any }) => {
               <FormLabel>Category *</FormLabel>
               <FormControl>
                 <MSelect
+                  disabled={form.formState.isSubmitting}
                   options={categoryOptions}
                   placeholder="Select a category"
                   value={field.value}
@@ -74,6 +76,7 @@ const BasicInfoSection = ({ form }: { form: any }) => {
             <FormLabel>Description *</FormLabel>
             <FormControl>
               <Textarea
+                disabled={form.formState.isSubmitting}
                 placeholder="Provide a detailed description of your item"
                 rows={7}
                 {...field}

@@ -9,10 +9,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { memo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Upload, X } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-const ImagesSection = ({ form }: { form: any }) => {
+const ImagesSection = ({ form  }: { form: any }) => {
 
   const inputRef = useRef<HTMLInputElement>(null);
    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -121,6 +121,12 @@ const ImagesSection = ({ form }: { form: any }) => {
                       >
                         <X />
                       </Button>
+                      {/* loading */}
+                      {form.formState.isSubmitting && (
+                        <div className="absolute top-0 left-0 w-full h-full bg-gray-200/50 flex items-center justify-center">
+                          <Loader2 className="h-8 w-8 animate-spin" />
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
