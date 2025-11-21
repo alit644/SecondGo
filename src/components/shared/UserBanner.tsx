@@ -13,8 +13,8 @@ const UserBanner =  ({ avatarUrl = "/215162792921.jpg" } : { avatarUrl?: string 
       .toUpperCase();
   };
 
-  // const session = await auth();
   const {data: session} = useSession()
+  console.log(session)
   const fullName = session?.user?.firstName + " " + session?.user?.lastName;
 
   return (

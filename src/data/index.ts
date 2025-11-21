@@ -50,7 +50,7 @@ export const navLinks = [
   label: "Explore",
  },
  {
-  href: "/categories",
+  href: "/test",
   label: "Categories",
  }
 ]

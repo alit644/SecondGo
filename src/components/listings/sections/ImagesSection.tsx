@@ -116,6 +116,7 @@ const ImagesSection = ({ form  }: { form: any }) => {
                       <Button
                         variant="ghost"
                         size="icon"
+                        disabled={form.formState.isSubmitting}
                         onClick={() => removeFile(index)}
                         className="absolute -top-2 -right-2 bg-red-500 text-white  opacity-0 group-hover:opacity-100 transition-opacity"
                       >

@@ -11,7 +11,7 @@ import PricingSection from "./sections/PricingSection";
 import ImagesSection from "./sections/ImagesSection";
 import LocationSection from "./sections/LocationSection";
 import TagsSection from "./sections/TagsSection";
-import { addListingAction } from "@/actions/add-listing-action";
+import { addListingAction } from "@/actions/listing-action";
 import { notify } from "@/utils/notify";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -46,7 +46,10 @@ const NewListingForm = () => {
         form.reset();
         notify("Listing added successfully", "success");
         router.push("/profile");
+      } else {
+        notify(result.message, "error");
       }
+
     } catch (error: any) {
       console.log(error);
       notify(

@@ -149,7 +149,7 @@ const Hero = () => {
                 <span className="h-6 w-24 rounded-md bg-foreground/10" />
 
                 <Link
-                  href="/marketplace"
+                  href="/become-seller"
                   aria-label="Open Marketplace"
                   className="rounded-md bg-foreground/90 px-3 py-1.5 text-xs font-medium text-background transition hover:bg-foreground"
                 >

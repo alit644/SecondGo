@@ -16,6 +16,7 @@ export default function Home() {
     <main>
       <div className="relative">
         <Hero />
+        
         <InfiniteMovingCardsDemo />
       </div>
 

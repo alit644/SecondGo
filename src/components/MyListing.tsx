@@ -1,18 +1,29 @@
-import Link from "next/link";
-import { Button } from "./ui/button";
+import { Suspense } from "react";
+import MyProductsCard from "./MyProductsCard";
 
+
+import { Button } from "./ui/button";
+import Link from "next/link";
+import Loading from "@/app/profile/loading";
 const MyListing = () => {
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold">My Listings</h1>
+      {/* static */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
+        <div>
+          <h2 className="text-xl font-bold">My Products</h2>
+          <p className="text-sm text-muted-foreground">
+            Manage and track your listings
+          </p>
+        </div>
         <Button>
           <Link href={"/add-listing"}>Add Listing</Link>
         </Button>
       </div>
-      <div className="flex items-center justify-center mt-4">
-        <p className="text-center text-lg text-muted-foreground"> No Products Found </p>
-      </div>
+      {/* Dynamic */}
+      <Suspense fallback={<Loading />}>
+        <MyProductsCard />{" "}
+      </Suspense>
     </div>
   );
 };

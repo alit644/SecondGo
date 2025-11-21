@@ -34,7 +34,10 @@ export const SignUpAction = async (
       },
     });
     if (user) {
-      return { success: false, message: "User already exists" };
+      return {
+        success: false,
+        message: "User already exists",
+      };
     }
     // hash password
     const hashedPassword = await bycrypt.hash(data.password, 10);
@@ -52,8 +55,12 @@ export const SignUpAction = async (
       password: data.password,
       redirect: false,
     });
-    
-    return { success: true, message: "Success Sign Up" };
+
+    return {
+      success: true,
+      message: "Success Sign Up",
+   
+    };
   } catch (error: any) {
     console.error("SignUp Error:", error);
     return {
@@ -107,7 +114,8 @@ export const signOutAction = async (): Promise<AuthResponse> => {
   } catch (error: any) {
     return {
       success: false,
-      message: error?.message || "Internal Server Error , Please try again later",
+      message:
+        error?.message || "Internal Server Error , Please try again later",
     };
   }
 };

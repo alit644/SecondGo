@@ -3,19 +3,33 @@ import authConfig from "./auth.config";
 import { NextResponse } from "next/server";
 const { auth: middleware } = NextAuth(authConfig);
 const authRoute = ["/login", "/register"];
-const protectedRoute = ["/profile"];
-export default middleware((req) => {
+const protectedRoute = ["/profile", "/add-listing", "/become-seller"];
+export default middleware(async (req) => {
   const { nextUrl } = req;
   const path = nextUrl.pathname;
-  const isUserLoggedIn: boolean = Boolean(req.auth);
+  const session = req.auth; // may be null
+  const isUserLoggedIn = !!session;
   if (authRoute.includes(path) && isUserLoggedIn) {
     return NextResponse.redirect(new URL("/", nextUrl));
   }
-  if (protectedRoute.includes(path) && !isUserLoggedIn) {
-    return NextResponse.redirect(new URL("/login", nextUrl));
+  if (protectedRoute.some((route) => path.startsWith(route))) {
+    if (!isUserLoggedIn) {
+      return NextResponse.redirect(new URL("/login", nextUrl));
+    }
+
+    if (session.user.role !== "SALLER") {
+      console.log(session);
+    }
   }
 });
 
 export const config = {
-  matcher: ["/login", "/register", "/profile"],
+  matcher: [
+    "/login",
+    "/register",
+    "/profile",
+    "/add-listing",
+    "/profile/:path*",
+    "/become-seller",
+  ],
 };
