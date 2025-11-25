@@ -6,7 +6,7 @@ import { getListingCached } from "@/lib/data";
 import { uploadImages } from "@/lib/uploadImages";
 import { prisma } from "@/utils/prisma";
 import { ListingSchema, listingSchema } from "@/utils/schema";
-import { revalidatePath, unstable_cache } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 //! add listing action
 export const addListingAction = async (data: ListingSchema) => {
@@ -104,7 +104,7 @@ export const getUserListing = async () => {
     //     createdAt: "desc",
     //   },
     // });
-  const listings = await getListingCached(session.user.id);
+    const listings = await getListingCached(session.user.id);
 
     return {
       success: true,
@@ -121,30 +121,58 @@ export const getUserListing = async () => {
   }
 };
 
-export const getUserListingTest = async () => {
-  const session = await auth();
+//! delete listing action
+export const deleteListingAction = async (id: string) => {
+  try {
+    const session = await auth();
+    if (!session) {
+      return {
+        success: false,
+        message: "User not found",
+      };
+    }
 
-  if (!session?.user) {
+    if (session?.user.role !== "SALLER") {
+      return {
+        success: false,
+        message: "User role is not SELLER",
+      };
+    }
+    const listing = await prisma.listing.findUnique({
+      where: { id },
+    });
+
+    if (!listing) {
+      return {
+        success: false,
+        message: "Listing not found",
+      };
+    }
+
+    if (listing.userId !== session.user.id) {
+      return {
+        success: false,
+        message: "You cannot delete this listing",
+      };
+    }
+
+    await prisma.listing.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    revalidatePath("/profile");
+    return {
+      success: true,
+      message: "Listing deleted successfully",
+    };
+  } catch (error: any) {
+    console.log(error);
     return {
       success: false,
-      message: "User not found",
-      data: [],
+      message:
+        error?.message || "Internal Server Error , Please try again later",
     };
   }
-
-  if (session.user.role !== "SALLER") {
-    return {
-      success: false,
-      message: "User is not seller",
-      data: [],
-    };
-  }
-
-  const listings = await getListingCached(session.user.id);
-
-  return {
-    success: true,
-    message: "Listings fetched successfully",
-    data: listings,
-  };
 };

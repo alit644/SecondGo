@@ -10,9 +10,10 @@ import {
   TableCell,
   TableCaption,
 } from "./ui/table";
-import { Eye, Edit, Trash2 } from "lucide-react";
+import { Eye, Edit } from "lucide-react";
 import { Listing } from "@prisma/client";
 import { getUserListing } from "@/actions/listing-action";
+import DeleteButton from "./shared/DeleteButton";
 
 const MyProductsCard = async () => {
   const { data } = await getUserListing();
@@ -23,10 +24,12 @@ const MyProductsCard = async () => {
           <div className="flex items-center gap-3 min-w-0">
             <div className="relative size-12 overflow-hidden rounded-md">
               <Image
-                src={p.image[0] || ""}
-                alt={p.title}
+                src={p.image[0] || "/no-image.jpg"}
+                alt={`${p.title} product image`}
                 fill
                 sizes="48px"
+                placeholder="blur"
+                blurDataURL="/blur-placeholder.png"
                 className="object-cover"
               />
             </div>
@@ -53,10 +56,7 @@ const MyProductsCard = async () => {
               <Edit className="size-4" />
               <span className="ml-1">Edit</span>
             </Button>
-            <Button variant="destructive" size="sm" aria-label="Delete">
-              <Trash2 className="size-4" />
-              <span className="ml-1">Delete</span>
-            </Button>
+            <DeleteButton id={p.id} />
           </div>
         </TableCell>
       </TableRow>
