@@ -15,23 +15,28 @@ import { addListingAction } from "@/actions/listing-action";
 import { notify } from "@/utils/notify";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Listing } from "@prisma/client";
+type ListingFormProps = {
+  mode: "add" | "edit";
+  initialData?: Listing;
+};
 
-const NewListingForm = () => {
+const NewListingForm = ({ mode, initialData }: ListingFormProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const form = useForm<ListingSchema>({
     defaultValues: {
-      title: "",
-      description: "",
-      category: "other",
-      price: 0,
+      title: initialData?.title || "",
+      description: initialData?.description || "",
+      category: initialData?.category || "other",
+      price: initialData?.price || 0,
       condition: "new",
-      isNegotiable: false,
-      tags: [],
-      image: [],
-      email: "",
-      location: "",
-      phone: "",
+      isNegotiable: initialData?.isNegotiable || false,
+      tags: initialData?.tags || [],
+      image: initialData?.image || [],
+      email: initialData?.email || "",
+      location: initialData?.location || "",
+      phone: initialData?.phone || "",
     },
 
     resolver: zodResolver(listingSchema) as unknown as Resolver<ListingSchema>,
@@ -41,15 +46,27 @@ const NewListingForm = () => {
     console.log("✅ Submitted data:", data);
     setLoading(true);
     try {
-      const result = await addListingAction(data);
-      if (result.success) {
-        form.reset();
-        notify("Listing added successfully", "success");
-        router.push("/profile");
+      let result;
+
+      if (mode === "add") {
+        result = await addListingAction(data);
       } else {
-        notify(result.message, "error");
+    console.log("✅ Submitted to edit data:", data);
+        // result = await updateListingAction(initialData!.id, data);
       }
 
+      if (result?.success) {
+        form.reset();
+        notify(
+          mode === "add"
+            ? "Listing added successfully"
+            : "Listing updated successfully",
+          "success"
+        );
+        router.push("/profile");
+      } else {
+        notify(result?.message, "error");
+      }
     } catch (error: any) {
       console.log(error);
       notify(
@@ -63,7 +80,9 @@ const NewListingForm = () => {
 
   return (
     <div className=" mx-auto p-4 space-y-6">
-      <h1 className="text-2xl font-bold text-center">Create New Listing</h1>
+      <h1 className="text-2xl font-bold text-center">
+        {mode === "add" ? "Create New Listing" : "Edit Listing"}
+      </h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>

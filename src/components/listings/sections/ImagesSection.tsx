@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+"use client";
 import {
   FormField,
   FormItem,
@@ -12,10 +12,12 @@ import { motion } from "framer-motion";
 import { Loader2, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-const ImagesSection = ({ form  }: { form: any }) => {
-
+const ImagesSection = ({ form }: { form: any }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>(
+    form.getValues("image")?.filter((img: any) => typeof img === "string") || []
+  );
   const { watch, setValue } = form;
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -23,7 +25,7 @@ const ImagesSection = ({ form  }: { form: any }) => {
       setSelectedFiles((prev) => [...prev, ...files].slice(0, 5));
       // sync with RHF form value for validation
       const current = watch("image") || [];
-      setValue("image", [...current, ...files].slice(0, 5));
+      setValue("image", [...existingImages, ...files].slice(0, 5));
     }
   };
 
@@ -115,6 +117,43 @@ const ImagesSection = ({ form  }: { form: any }) => {
                       />
                       <Button
                         variant="ghost"
+                        size="icon"
+                        disabled={form.formState.isSubmitting}
+                        onClick={() => removeFile(index)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white  opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X />
+                      </Button>
+                      {/* loading */}
+                      {form.formState.isSubmitting && (
+                        <div className="absolute top-0 left-0 w-full h-full bg-gray-200/50 flex items-center justify-center">
+                          <Loader2 className="h-8 w-8 animate-spin" />
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {/* existing images */}
+            {existingImages.length > 0 && (
+              <div className="mt-4">
+                <h4 className="text-sm font-medium mb-2">
+                  Existing Images ({existingImages.length})
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {existingImages.map((url, index) => (
+                    <div key={index} className="relative group">
+                      <Image
+                        src={url}
+                        alt={`Existing ${index + 1}`}
+                        width={80}
+                        height={80}
+                        className="h-20 w-20 object-cover rounded-md border"
+                      />
+                      <Button
+                        variant="ghost"
+                        type="button"
                         size="icon"
                         disabled={form.formState.isSubmitting}
                         onClick={() => removeFile(index)}

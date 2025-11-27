@@ -16,10 +16,6 @@ export default middleware(async (req) => {
     if (!isUserLoggedIn) {
       return NextResponse.redirect(new URL("/login", nextUrl));
     }
-
-    if (session.user.role !== "SALLER") {
-      console.log(session);
-    }
   }
 });
 

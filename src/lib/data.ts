@@ -8,6 +8,16 @@ export const getListingCached = unstable_cache(
       orderBy: { createdAt: "desc" },
     });
   },
-  ["user-listings"], // key
-  { revalidate: 60 }
+  ["user-listings"],
+  { revalidate: 60, tags: ["listing"] }
+);
+
+export const getListingByIdCached = unstable_cache(
+  async (id: string) => {
+    return prisma.listing.findUnique({
+      where: { id },
+    });
+  },
+  ["listing-by-id"], // key
+  { revalidate: 60, tags: ["listing"] }
 );

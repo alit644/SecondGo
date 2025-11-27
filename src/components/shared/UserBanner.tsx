@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Settings, Mail, Edit, ShieldCheck, OctagonAlert } from "lucide-react";
 import { useSession } from "next-auth/react";
 
-const UserBanner =  ({ avatarUrl = "/215162792921.jpg" } : { avatarUrl?: string }) => {
+const UserBanner =  ({ avatarUrl = "/user-profile.jpg" } : { avatarUrl?: string }) => {
   const getInitials = (name: string) => {
     return name
       .split(" ")
@@ -14,7 +14,6 @@ const UserBanner =  ({ avatarUrl = "/215162792921.jpg" } : { avatarUrl?: string 
   };
 
   const {data: session} = useSession()
-  console.log(session)
   const fullName = session?.user?.firstName + " " + session?.user?.lastName;
 
   return (

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { UserRound } from "lucide-react";
 import Logo from "./Logo";

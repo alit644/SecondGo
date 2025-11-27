@@ -60,21 +60,20 @@ export const listingSchema = z.object({
     .string({ error: "Email is required" })
     .email("Invalid email address"),
   tags: z.array(z.string({ error: "Tag is required" })),
-  image: z
-    .array(
-      z
-        .instanceof(File)
-        .refine(
-          (file) => file.size <= 5 * 1024 * 1024,
-          "Each file must be under 5MB"
-        )
-        .refine(
-          (file) =>
-            ["image/jpeg", "image/png", "image/gif"].includes(file.type),
-          "Only JPG, PNG, or GIF files are allowed"
-        )
-    )
-    .max(5, "You can upload up to 5 images"),
+   image: z.array(
+     z.union([
+       z.instanceof(File, { message: "Please upload a valid file" })
+         .refine(
+           (file) => file.size <= 5 * 1024 * 1024,
+           "Each file must be under 5MB"
+         )
+         .refine(
+           (file) => ["image/jpeg", "image/png", "image/gif"].includes(file.type),
+           "Only JPG, PNG, or GIF files are allowed"
+         ),
+       z.string().url("Please enter a valid URL")
+     ])
+   ).max(5, "You can upload up to 5 images"),
 });
 
 export type ListingSchema = z.infer<typeof listingSchema>;

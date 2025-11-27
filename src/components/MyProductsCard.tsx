@@ -14,6 +14,7 @@ import { Eye, Edit } from "lucide-react";
 import { Listing } from "@prisma/client";
 import { getUserListing } from "@/actions/listing-action";
 import DeleteButton from "./shared/DeleteButton";
+import Link from "next/link";
 
 const MyProductsCard = async () => {
   const { data } = await getUserListing();
@@ -52,10 +53,12 @@ const MyProductsCard = async () => {
             <Button variant="ghost" size="icon" aria-label="View">
               <Eye className="size-4" />
             </Button>
-            <Button variant="outline" size="sm" aria-label="Edit">
-              <Edit className="size-4" />
-              <span className="ml-1">Edit</span>
-            </Button>
+            <Link href={`/add-listing/${p.id}`}>
+              <Button variant="outline" size="sm" aria-label="Edit">
+                <Edit className="size-4" />
+                <span className="ml-1">Edit</span>
+              </Button>
+            </Link>
             <DeleteButton id={p.id} />
           </div>
         </TableCell>

@@ -13,7 +13,7 @@ const Page = async () => {
   }
   return (
     <div className="bg-background my-6">
-      <NewListingForm />
+      <NewListingForm mode="add" />
     </div>
   );
 };

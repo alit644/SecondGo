@@ -2,11 +2,11 @@
 "use server";
 
 import { auth } from "@/auth";
-import { getListingCached } from "@/lib/data";
+import { getListingByIdCached, getListingCached } from "@/lib/data";
 import { uploadImages } from "@/lib/uploadImages";
 import { prisma } from "@/utils/prisma";
 import { ListingSchema, listingSchema } from "@/utils/schema";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 
 //! add listing action
 export const addListingAction = async (data: ListingSchema) => {
@@ -40,7 +40,7 @@ export const addListingAction = async (data: ListingSchema) => {
     }
 
     const imagesFiles = data.image;
-    const imagesUrl = await uploadImages(imagesFiles, userId.user.id!);
+    const imagesUrl = await uploadImages(imagesFiles as File[], userId.user.id!);
 
     await prisma.listing.create({
       data: {
@@ -176,3 +176,53 @@ export const deleteListingAction = async (id: string) => {
     };
   }
 };
+
+//! get one listing action
+export const getListingById = async (id: string) => {
+ try {
+  const session = await auth()
+    if (!session) {
+      return {
+        success: false,
+        message: "User not found",
+      };
+    }
+
+    if (session?.user.role !== "SALLER") {
+      return {
+        success: false,
+        message: "User role is not SELLER",
+      };
+    }
+
+     const listing = await getListingByIdCached(id)
+
+    if (!listing) {
+      return {
+        success: false,
+        message: "Listing not found",
+      };
+    }
+
+    if (listing.userId !== session.user.id) {
+      return {
+        success: false,
+        message: "You do not have permission to access this listing",
+      };
+    }
+
+    return {
+      success: true,
+      message: "Listing fetched successfully",
+      data: listing,
+    };
+  
+ } catch (error: any) {
+    console.log(error);
+    return {
+      success: false,
+      message:
+        error?.message || "Internal Server Error , Please try again later",
+    };
+  }
+}
