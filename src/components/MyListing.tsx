@@ -11,7 +11,7 @@ const MyListing = () => {
       {/* static */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <div>
-          <h2 className="text-xl font-bold">My Products</h2>
+          <h2 className="text-xl font-bold">My Listings</h2>
           <p className="text-sm text-muted-foreground">
             Manage and track your listings
           </p>

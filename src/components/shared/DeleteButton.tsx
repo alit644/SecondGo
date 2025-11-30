@@ -6,7 +6,7 @@ import Link from "next/link";
 const DeleteButton = ({id} : {id:string}) => {
   return (
     <Link href={`/profile/delete/${id}`} scroll={false} className="text-red-600 hover:underline">
-      <Button variant="destructive" size="sm" aria-label="Delete">
+      <Button variant="destructive" size="sm" aria-label="Delete" title="Delete">
         <Trash2 className="size-4" />
         <span className="ml-1">Delete</span>
       </Button>

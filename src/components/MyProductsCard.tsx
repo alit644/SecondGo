@@ -10,7 +10,7 @@ import {
   TableCell,
   TableCaption,
 } from "./ui/table";
-import { Eye, Edit } from "lucide-react";
+import { Eye, Edit, Package, Plus } from "lucide-react";
 import { Listing } from "@prisma/client";
 import { getUserListing } from "@/actions/listing-action";
 import DeleteButton from "./shared/DeleteButton";
@@ -50,11 +50,23 @@ const MyProductsCard = async () => {
         <TableCell>{p.condition}</TableCell>
         <TableCell className="text-right">
           <div className="flex items-center justify-end gap-1">
-            <Button variant="ghost" size="icon" aria-label="View">
-              <Eye className="size-4" />
-            </Button>
+            <Link href={`/profile/view/${p.id}`} scroll={false}>
+              <Button
+                title="View"
+                variant="ghost"
+                size="icon"
+                aria-label="View"
+              >
+                <Eye className="size-4" />
+              </Button>
+            </Link>
             <Link href={`/add-listing/${p.id}`}>
-              <Button variant="outline" size="sm" aria-label="Edit">
+              <Button
+                title="Edit"
+                variant="outline"
+                size="sm"
+                aria-label="Edit"
+              >
                 <Edit className="size-4" />
                 <span className="ml-1">Edit</span>
               </Button>
@@ -69,14 +81,28 @@ const MyProductsCard = async () => {
   return (
     <div className="w-full space-y-4">
       {data === undefined || data?.length === 0 ? (
-        <p className="text-center text-lg text-muted-foreground">
-          {" "}
-          No Listings Found{" "}
-        </p>
+        <div className="flex flex-col items-center justify-center p-8 text-center border-2 border-dashed rounded-lg bg-muted/20">
+          <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
+            <Package className="w-8 h-8 text-primary" />
+          </div>
+          <h3 className="text-lg font-medium text-foreground">
+            No Listings Yet
+          </h3>
+          <p className="max-w-md mt-2 text-sm text-muted-foreground">
+            You haven&apos;t created any listings yet. Start by adding your
+            first product!
+          </p>
+          <Button className="mt-6" asChild>
+            <Link href="/add-listing">
+              <Plus className="w-4 h-4 mr-2" />
+              Add Your First Listing
+            </Link>
+          </Button>
+        </div>
       ) : (
         <div className="rounded-xl border bg-background shadow-sm">
           <Table>
-            <TableCaption>Your products overview</TableCaption>
+            <TableCaption>Your Listings overview</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Product</TableHead>

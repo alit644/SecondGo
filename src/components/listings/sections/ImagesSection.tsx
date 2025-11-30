@@ -16,7 +16,7 @@ const ImagesSection = ({ form }: { form: any }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>(
-    form.getValues("image")?.filter((img: any) => typeof img === "string") || []
+   form.getValues("image")?.filter((img: any) => typeof img === "string") || []
   );
   const { watch, setValue } = form;
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +31,7 @@ const ImagesSection = ({ form }: { form: any }) => {
 
   const removeFile = (index: number) => {
     setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    setExistingImages((prev) => prev.filter((_, i) => i !== index))
     const current = watch("image") || [];
     const updated = current.filter((_: any, i: number) => i !== index);
     setValue("image", updated);

@@ -11,7 +11,7 @@ import PricingSection from "./sections/PricingSection";
 import ImagesSection from "./sections/ImagesSection";
 import LocationSection from "./sections/LocationSection";
 import TagsSection from "./sections/TagsSection";
-import { addListingAction } from "@/actions/listing-action";
+import { addListingAction, updateListingAction } from "@/actions/listing-action";
 import { notify } from "@/utils/notify";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,9 +19,10 @@ import { Listing } from "@prisma/client";
 type ListingFormProps = {
   mode: "add" | "edit";
   initialData?: Listing;
+  id? : string
 };
 
-const NewListingForm = ({ mode, initialData }: ListingFormProps) => {
+const NewListingForm = ({ mode, initialData, id }: ListingFormProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const form = useForm<ListingSchema>({
@@ -43,7 +44,6 @@ const NewListingForm = ({ mode, initialData }: ListingFormProps) => {
   });
 
   const onSubmit = async (data: ListingSchema) => {
-    console.log("✅ Submitted data:", data);
     setLoading(true);
     try {
       let result;
@@ -51,8 +51,8 @@ const NewListingForm = ({ mode, initialData }: ListingFormProps) => {
       if (mode === "add") {
         result = await addListingAction(data);
       } else {
-    console.log("✅ Submitted to edit data:", data);
-        // result = await updateListingAction(initialData!.id, data);
+       //TODO : حذف صور من تخزين بعد عملية تعديل 
+        result = await updateListingAction(data , id as string);
       }
 
       if (result?.success) {

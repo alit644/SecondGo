@@ -20,7 +20,7 @@ const Page = async ({ params }: PageProps) => {
 
   return (
     <div>
-      <NewListingForm mode="edit" initialData={result.data} />
+      <NewListingForm mode="edit" initialData={result.data} id={id}/>
     </div>
   );
 };

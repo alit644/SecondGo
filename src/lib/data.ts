@@ -16,6 +16,9 @@ export const getListingByIdCached = unstable_cache(
   async (id: string) => {
     return prisma.listing.findUnique({
       where: { id },
+      include: {
+        user: true,
+      },
     });
   },
   ["listing-by-id"], // key

@@ -6,9 +6,9 @@ import { getListingByIdCached, getListingCached } from "@/lib/data";
 import { uploadImages } from "@/lib/uploadImages";
 import { prisma } from "@/utils/prisma";
 import { ListingSchema, listingSchema } from "@/utils/schema";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
-//! add listing action
+//! POST listing action
 export const addListingAction = async (data: ListingSchema) => {
   try {
     // validation
@@ -40,7 +40,10 @@ export const addListingAction = async (data: ListingSchema) => {
     }
 
     const imagesFiles = data.image;
-    const imagesUrl = await uploadImages(imagesFiles as File[], userId.user.id!);
+    const imagesUrl = await uploadImages(
+      imagesFiles as File[],
+      userId.user.id!
+    );
 
     await prisma.listing.create({
       data: {
@@ -78,7 +81,7 @@ export const addListingAction = async (data: ListingSchema) => {
   }
 };
 
-//! get user listings action
+//! GET user listings action
 export const getUserListing = async () => {
   try {
     const session = await auth();
@@ -121,7 +124,7 @@ export const getUserListing = async () => {
   }
 };
 
-//! delete listing action
+//! DELETE listing action
 export const deleteListingAction = async (id: string) => {
   try {
     const session = await auth();
@@ -177,10 +180,10 @@ export const deleteListingAction = async (id: string) => {
   }
 };
 
-//! get one listing action
+//! GET/:ID one listing action
 export const getListingById = async (id: string) => {
- try {
-  const session = await auth()
+  try {
+    const session = await auth();
     if (!session) {
       return {
         success: false,
@@ -195,7 +198,7 @@ export const getListingById = async (id: string) => {
       };
     }
 
-     const listing = await getListingByIdCached(id)
+    const listing = await getListingByIdCached(id);
 
     if (!listing) {
       return {
@@ -216,8 +219,7 @@ export const getListingById = async (id: string) => {
       message: "Listing fetched successfully",
       data: listing,
     };
-  
- } catch (error: any) {
+  } catch (error: any) {
     console.log(error);
     return {
       success: false,
@@ -225,4 +227,94 @@ export const getListingById = async (id: string) => {
         error?.message || "Internal Server Error , Please try again later",
     };
   }
-}
+};
+//! UPDATE listing action
+export const updateListingAction = async (data: ListingSchema, id: string) => {
+  try {
+    // validation
+    const validation = listingSchema.safeParse(data);
+    if (!validation.success) {
+      return {
+        success: false,
+        message: validation.error.issues
+          .map((issue) => issue.message)
+          .join(", "),
+      };
+    }
+    // get user id from session
+    const session = await auth();
+
+    if (!session) {
+      return {
+        success: false,
+        message: "User not found",
+      };
+    }
+
+    // user role (SALLER)
+    if (session?.user.role !== "SALLER") {
+      return {
+        success: false,
+        message: "User role is not SELLER",
+      };
+    }
+
+    const listing = await prisma.listing.findUnique({
+      where: { id },
+    });
+
+    if (!listing) {
+      return {
+        success: false,
+        message: "Listing not found",
+      };
+    }
+
+    if (listing.userId !== session.user.id) {
+      return {
+        success: false,
+        message: "You do not have permission to access this listing",
+      };
+    }
+
+    //  Upload only new images (files)
+    const newFiles = data.image.filter((img) => img instanceof File) as File[];
+    const uploadedImages = await uploadImages(newFiles, session.user.id);
+    //  Merge old + new images
+    const finalImages = [
+      ...data.image.filter((img) => typeof img === "string"),
+      ...uploadedImages,
+    ];
+
+    await prisma.listing.update({
+      data: {
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        price: data.price,
+        condition: data.condition,
+        isNegotiable: data.isNegotiable || false,
+        tags: data.tags,
+        image: finalImages,
+        email: data.email,
+        location: data.location,
+        phone: data.phone,
+      },
+      where: { id },
+    });
+
+    revalidatePath("/profile");
+    revalidateTag("listing")
+    return {
+      success: true,
+      message: "Listing added successfully",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      success: false,
+      message:
+        error?.message || "Internal Server Error , Please try again later",
+    };
+  }
+};
