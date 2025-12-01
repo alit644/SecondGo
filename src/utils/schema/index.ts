@@ -77,3 +77,11 @@ export const listingSchema = z.object({
 });
 
 export type ListingSchema = z.infer<typeof listingSchema>;
+
+export const accountSchema = z.object({
+  firstName: z.string().min(2).max(50),
+  lastName: z.string().min(2).max(50),
+  // location: z.string().optional(),
+  phone: z.string().optional(),
+});
+export type AccountSchema = z.infer<typeof accountSchema>

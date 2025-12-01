@@ -30,7 +30,6 @@ const MyProductsCard = async () => {
                 fill
                 sizes="48px"
                 placeholder="blur"
-                blurDataURL="/blur-placeholder.png"
                 className="object-cover"
               />
             </div>

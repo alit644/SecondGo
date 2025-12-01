@@ -33,6 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.firstName = user.firstName;
         session.user.lastName = user.lastName;
         session.user.role = user.role as Role;
+        session.user.image = user.image;
       }
       return session;
     },
