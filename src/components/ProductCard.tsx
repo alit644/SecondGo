@@ -13,8 +13,15 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import MAvatar from "./shared/MAvatar";
+import { Prisma } from "@prisma/client";
+type ListingWithUser = Prisma.ListingGetPayload<{
+  include: { user: { select: { image: true; id: true; name: true } } };
+}>;
 
-const ProductCard = () => {
+interface IProductCard {
+  listing: ListingWithUser;
+}
+const ProductCard = ({ listing }: IProductCard) => {
   return (
     <motion.div
       className="w-full mb-2"
@@ -30,12 +37,12 @@ const ProductCard = () => {
             {/* image */}
             <div className="relative aspect-square w-full overflow-hidden rounded-lg transition-transform duration-300 group-hover:scale-[1.03]">
               <Image
-                src="/215162792921.jpg"
+                src={listing?.image?.[0] || "/215162792921.jpg"}
                 alt="product image"
                 fill
                 sizes="260px"
                 priority
-                className="object-cover"
+                className="object-cover select-none pointer-events-none"
               />
               <Button
                 size="icon"
@@ -47,16 +54,18 @@ const ProductCard = () => {
             </div>
           </div>
           <div className="absolute bottom-[-2px] left-7">
-            <MAvatar />
+            <MAvatar userAvatar={listing?.user?.image || "/user-profile.jpg"} />
           </div>
         </CardHeader>
 
         <CardContent className="px-4 pb-4">
           {/* title */}
-          <CardTitle className="text-sm sm:text-md line-clamp-2">Amazing digital art </CardTitle>
+          <CardTitle className="text-sm sm:text-md line-clamp-2">
+            {listing?.title}
+          </CardTitle>
           <CardDescription className="mt-1 font-semibold flex items-center gap-1 text-[15px]">
             <Zap className="size-3 text-primary" />
-            21.99 ${/* count */}
+            {listing?.price} ${/* count */}
             <span className="text-muted-foreground">• 1/1</span>
           </CardDescription>
           <Link

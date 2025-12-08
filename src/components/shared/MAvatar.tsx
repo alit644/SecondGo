@@ -1,9 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-const MAvatar = () => {
+const MAvatar = ({userAvatar} : {userAvatar: string | null}) => {
   return (
     <Avatar className="h-[35px] w-[35px]">
-      <AvatarImage alt="avatar"  src="https://images.unsplash.com/photo-1511485977113-f34c92461ad9?ixlib=rb-1.2.1&w=128&h=128&dpr=2&q=80" />
+      <AvatarImage alt="avatar"  src={userAvatar || "/user-profile.jpg"} className="select-none pointer-events-none"/>
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
   );

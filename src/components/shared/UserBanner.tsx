@@ -74,7 +74,7 @@ const UserBanner = ({
               <Avatar className="h-full w-full">
                 <AvatarImage
                   src={preview || session?.user?.image || avatarUrl}
-                  alt={session?.user?.name || ""}
+                  alt={session?.user?.name || "Avatar Image"}
                   className="group-hover:opacity-80 transition-opacity duration-300 object-cover"
                 />
                 <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white text-xl">

@@ -29,8 +29,7 @@ const MyProductsCard = async () => {
                 alt={`${p.title} product image`}
                 fill
                 sizes="48px"
-                placeholder="blur"
-                className="object-cover"
+                className="object-cover select-none pointer-events-none"
               />
             </div>
             <div className="flex-1 min-w-0">

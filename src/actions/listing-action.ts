@@ -2,7 +2,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { getListingByIdCached, getListingCached } from "@/lib/data";
+import { getListingByIdCached, getListingCached, getListingsCached } from "@/lib/data";
 import { uploadImages } from "@/lib/uploadImages";
 import { prisma } from "@/utils/prisma";
 import { ListingSchema, listingSchema } from "@/utils/schema";
@@ -67,6 +67,7 @@ export const addListingAction = async (data: ListingSchema) => {
     });
 
     revalidatePath("/profile");
+    revalidateTag("all-listing");
     return {
       success: true,
       message: "Listing added successfully",
@@ -166,6 +167,7 @@ export const deleteListingAction = async (id: string) => {
     });
 
     revalidatePath("/profile");
+    revalidateTag("all-listing");
     return {
       success: true,
       message: "Listing deleted successfully",
@@ -304,10 +306,30 @@ export const updateListingAction = async (data: ListingSchema, id: string) => {
     });
 
     revalidatePath("/profile");
-    revalidateTag("listing")
+    revalidateTag("listing");
+    revalidateTag("all-listing");
     return {
       success: true,
       message: "Listing added successfully",
+    };
+  } catch (error: any) {
+    console.log(error);
+    return {
+      success: false,
+      message:
+        error?.message || "Internal Server Error , Please try again later",
+    };
+  }
+};
+
+//! GET public listing action
+export const getPublicListings = async () => {
+  try {
+    const listings = await getListingsCached();
+    return {
+      success: true,
+      message: "Listings fetched successfully",
+      data: listings,
     };
   } catch (error: any) {
     console.log(error);

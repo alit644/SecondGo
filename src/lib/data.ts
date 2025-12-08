@@ -24,3 +24,17 @@ export const getListingByIdCached = unstable_cache(
   ["listing-by-id"], // key
   { revalidate: 60, tags: ["listing"] }
 );
+
+export const getListingsCached = unstable_cache(
+  async () => {
+    return prisma.listing.findMany({
+      include: {
+        user: true,
+      },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    });
+  },
+  ["all-listing"], // key
+  { revalidate: 3600, tags: ["all-listing"] }
+);

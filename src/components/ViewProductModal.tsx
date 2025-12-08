@@ -9,16 +9,20 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import MAvatar from "./shared/MAvatar";
 import { Listing } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+type ListingWithUser = Prisma.ListingGetPayload<{
+  include: { user: { select: { image: true; id: true; name: true } } };
+}>;
 interface IViewProduct {
- listing : Listing
+ listing : ListingWithUser
 }
 const ViewProductModal = ({listing}:IViewProduct) => {
   const router = useRouter();
 
   const product = {
-    title: listing.title,
-    price: listing.price,
-    images: listing.image || "/215162792921.jpg",
+    title: listing?.title,
+    price: listing?.price,
+    images: listing?.image || ["/215162792921.jpg"],
     creator: "@artist123",
     supply: 1,
     listed: 1,
@@ -49,7 +53,7 @@ const ViewProductModal = ({listing}:IViewProduct) => {
               </div>
 
               <div className="absolute bottom-[-16px] left-4">
-                <MAvatar />
+                <MAvatar userAvatar={listing?.user?.image || "/user-profile.jpg"} />
               </div>
             </div>
 
