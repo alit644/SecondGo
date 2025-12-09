@@ -2,7 +2,10 @@
 "use server";
 
 import { auth } from "@/auth";
-import { getListingByIdCached, getListingCached, getListingsCached } from "@/lib/data";
+import {
+  getListingByIdCached,
+  getListingsCached,
+} from "@/lib/data";
 import { uploadImages } from "@/lib/uploadImages";
 import { prisma } from "@/utils/prisma";
 import { ListingSchema, listingSchema } from "@/utils/schema";
@@ -66,8 +69,9 @@ export const addListingAction = async (data: ListingSchema) => {
       },
     });
 
-    revalidatePath("/profile");
+    revalidatePath("/profile" , "page");
     revalidateTag("all-listing");
+    revalidateTag("listing");
     return {
       success: true,
       message: "Listing added successfully",
@@ -82,48 +86,6 @@ export const addListingAction = async (data: ListingSchema) => {
   }
 };
 
-//! GET user listings action
-export const getUserListing = async () => {
-  try {
-    const session = await auth();
-    if (!session) {
-      return {
-        success: false,
-        message: "User not found",
-      };
-    }
-
-    if (session?.user.role !== "SALLER") {
-      return {
-        success: false,
-        message: "User role is not SELLER",
-      };
-    }
-
-    // const listings = await prisma.listing.findMany({
-    //   where: {
-    //     userId: session.user.id,
-    //   },
-    //   orderBy: {
-    //     createdAt: "desc",
-    //   },
-    // });
-    const listings = await getListingCached(session.user.id);
-
-    return {
-      success: true,
-      message: "Listings fetched successfully",
-      data: listings,
-    };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      success: false,
-      message:
-        error?.message || "Internal Server Error , Please try again later",
-    };
-  }
-};
 
 //! DELETE listing action
 export const deleteListingAction = async (id: string) => {
@@ -166,8 +128,10 @@ export const deleteListingAction = async (id: string) => {
       },
     });
 
-    revalidatePath("/profile");
+    revalidatePath("/profile" , "page");
     revalidateTag("all-listing");
+    revalidateTag("listing");
+
     return {
       success: true,
       message: "Listing deleted successfully",
@@ -305,7 +269,7 @@ export const updateListingAction = async (data: ListingSchema, id: string) => {
       where: { id },
     });
 
-    revalidatePath("/profile");
+    revalidatePath("/profile" , "page");
     revalidateTag("listing");
     revalidateTag("all-listing");
     return {

@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
+  experimental: {
+    useCache: true,
+  },
+
   // image config
   images: {
     domains: ["gjngzryhhoivozpykygs.supabase.co"],
@@ -15,7 +19,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
- 
 };
 
 export default nextConfig;

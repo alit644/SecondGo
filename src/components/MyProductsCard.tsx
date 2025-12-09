@@ -10,14 +10,14 @@ import {
   TableCell,
   TableCaption,
 } from "./ui/table";
-import { Eye, Edit, Package, Plus } from "lucide-react";
+import { Eye, Edit } from "lucide-react";
 import { Listing } from "@prisma/client";
-import { getUserListing } from "@/actions/listing-action";
 import DeleteButton from "./shared/DeleteButton";
 import Link from "next/link";
-
-const MyProductsCard = async () => {
-  const { data } = await getUserListing();
+interface IProductsCard {
+  data: Listing[];
+}
+const MyProductsCard = ({ data }: IProductsCard) => {
   const listings = data?.map((p: Listing) => {
     return (
       <TableRow key={p.id}>
@@ -78,43 +78,22 @@ const MyProductsCard = async () => {
 
   return (
     <div className="w-full space-y-4">
-      {data === undefined || data?.length === 0 ? (
-        <div className="flex flex-col items-center justify-center p-8 text-center border-2 border-dashed rounded-lg bg-muted/20">
-          <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-primary/10">
-            <Package className="w-8 h-8 text-primary" />
-          </div>
-          <h3 className="text-lg font-medium text-foreground">
-            No Listings Yet
-          </h3>
-          <p className="max-w-md mt-2 text-sm text-muted-foreground">
-            You haven&apos;t created any listings yet. Start by adding your
-            first product!
-          </p>
-          <Button className="mt-6" asChild>
-            <Link href="/add-listing">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Your First Listing
-            </Link>
-          </Button>
-        </div>
-      ) : (
-        <div className="rounded-xl border bg-background shadow-sm">
-          <Table>
-            <TableCaption>Your Listings overview</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Product</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>category</TableHead>
-                <TableHead>condition</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>{listings}</TableBody>
-          </Table>
-        </div>
-      )}
+      <div className="rounded-xl border bg-background shadow-sm">
+        <Table>
+          <TableCaption>Your Listings overview</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Product</TableHead>
+              <TableHead>Price</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>category</TableHead>
+              <TableHead>condition</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>{listings}</TableBody>
+        </Table>
+      </div>
     </div>
   );
 };
