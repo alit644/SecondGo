@@ -8,7 +8,6 @@ import { Zap } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import MAvatar from "./shared/MAvatar";
-import { Listing } from "@prisma/client";
 import { Prisma } from "@prisma/client";
 type ListingWithUser = Prisma.ListingGetPayload<{
   include: { user: { select: { image: true; id: true; name: true } } };

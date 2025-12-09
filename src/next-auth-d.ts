@@ -19,13 +19,3 @@ declare module "next-auth" {
   }
 
 }
-// declare module '@auth/core/jwt' {
-//   interface JWTToken extends DefaultJWT {
-//     id: string;
-//     role: Role;
-//     firstName?: string | null;
-//     lastName?: string | null;
-//   }
-// }
-//TODO : Check JWT interface usage in the project and update if necessary. 
-//TODO : خطأ في توسيع واجهة JWT في next-auth. يجب استخدام اسم الواجهة الصحيح لتوسيعها بشكل صحيح. 

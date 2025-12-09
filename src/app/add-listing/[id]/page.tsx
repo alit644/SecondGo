@@ -1,6 +1,7 @@
 import NewListingForm from "@/components/listings/NewListingForm";
-import { getListingById } from "@/actions/listing-action";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getDataById } from "@/lib/data";
+import { auth } from "@/auth";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -8,19 +9,27 @@ interface PageProps {
 
 const Page = async ({ params }: PageProps) => {
   const { id } = await params;
-  const result = await getListingById(id);
-
-  if (!result.success) {
+  // session Check
+  const session = await auth();
+  const result = await getDataById(id);
+  // Check if the user is authorized to edit this listing
+  if (session?.user?.id !== result?.data?.userId) {
+    redirect("/unauthorized");
+  }
+  
+  if (!result?.success) {
     if (result.message === "Listing not found") {
-      notFound(); 
+      notFound();
     } else {
-      throw new Error(result.message);
+      throw new Error(result?.message);
     }
   }
 
+  
+
   return (
     <div>
-      <NewListingForm mode="edit" initialData={result.data} id={id}/>
+      <NewListingForm mode="edit" initialData={result?.data} id={id} />
     </div>
   );
 };

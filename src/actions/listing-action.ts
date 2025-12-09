@@ -3,7 +3,6 @@
 
 import { auth } from "@/auth";
 import {
-  getListingByIdCached,
   getListingsCached,
 } from "@/lib/data";
 import { uploadImages } from "@/lib/uploadImages";
@@ -86,7 +85,6 @@ export const addListingAction = async (data: ListingSchema) => {
   }
 };
 
-
 //! DELETE listing action
 export const deleteListingAction = async (id: string) => {
   try {
@@ -135,55 +133,6 @@ export const deleteListingAction = async (id: string) => {
     return {
       success: true,
       message: "Listing deleted successfully",
-    };
-  } catch (error: any) {
-    console.log(error);
-    return {
-      success: false,
-      message:
-        error?.message || "Internal Server Error , Please try again later",
-    };
-  }
-};
-
-//! GET/:ID one listing action
-export const getListingById = async (id: string) => {
-  try {
-    const session = await auth();
-    if (!session) {
-      return {
-        success: false,
-        message: "User not found",
-      };
-    }
-
-    if (session?.user.role !== "SALLER") {
-      return {
-        success: false,
-        message: "User role is not SELLER",
-      };
-    }
-
-    const listing = await getListingByIdCached(id);
-
-    if (!listing) {
-      return {
-        success: false,
-        message: "Listing not found",
-      };
-    }
-
-    if (listing.userId !== session.user.id) {
-      return {
-        success: false,
-        message: "You do not have permission to access this listing",
-      };
-    }
-
-    return {
-      success: true,
-      message: "Listing fetched successfully",
-      data: listing,
     };
   } catch (error: any) {
     console.log(error);

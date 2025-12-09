@@ -1,5 +1,5 @@
-import { getListingById } from "@/actions/listing-action";
 import ViewProductModal from "@/components/ViewProductModal";
+import { getDataById } from "@/lib/data";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -8,13 +8,14 @@ type PageProps = {
 export const ViewListingModal = async ({params} :PageProps ) => {
   const { id } = await params;
 
-  const result = await getListingById(id);
+  const result = await getDataById(id);
+  
 
-  if (!result.success || !result.data) {
+  if (!result?.success || !result.data) {
     return <div className="p-6">Listing not found</div>;
   }
 
-  const listing = result.data;
+  const listing = result?.data;
 
   return (
  <>

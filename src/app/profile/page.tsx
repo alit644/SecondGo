@@ -1,5 +1,7 @@
 import { auth } from "@/auth";
+import BecomeSellerSection from "@/components/BecomeSellerSection";
 import MyListing from "@/components/MyListing";
+import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
 const ProfilePage = async ({
   searchParams,
@@ -9,20 +11,12 @@ const ProfilePage = async ({
   const page = await searchParams;
   const session = await auth();
  if (!session) {
-    return (
-      //TODO :   redirect("/login");
-      <div className="text-red-500 p-6 text-center">
-        ❌ User not authenticated. Please login.
-      </div>
-    );
+      redirect("/login");
   }
   
     if (session?.user.role !== "SALLER") {
       return (
-        //TODO :   redirect("/unauthorized");
-        <div className="text-red-500 p-6 text-center">
-          ❌ User role is not SELLER. Please login.
-        </div>
+      <BecomeSellerSection email={session?.user?.email as string} />
       );
     }
 const currentPage = parseInt(page.page || "1", 10);
