@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 import {
   Settings,
   Mail,
@@ -30,7 +31,7 @@ const UserBanner = ({
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [isPending, startTransition] = useTransition();
-  const { data: session } = useSession();
+  const { data: session , status} = useSession();
   const fullName = session?.user?.firstName + " " + session?.user?.lastName;
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,27 +118,41 @@ const UserBanner = ({
           </div>
 
           <div>
-            <div className="flex items-center space-x-2">
-              <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {session?.user?.name || fullName}
-              </h2>
-              {session?.user?.role === "SALLER" && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                  <ShieldCheck className="h-4 w-4 mr-1" />
-                  Verified
-                </span>
-              )}
-              {session?.user?.role === "USER" && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
-                  <OctagonAlert className="h-4 w-4 mr-1" />
-                  Not Verified
-                </span>
-              )}
-            </div>
-            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-              <Mail className="h-4 w-4 mr-1" />
-              <span>{session?.user?.email}</span>
-            </div>
+            {status === 'loading' ? (
+              <>
+                <div className="flex items-center space-x-2 mb-2">
+                  <Skeleton className="h-6 w-48" />
+                  <Skeleton className="h-5 w-20 rounded-full" />
+                </div>
+                <div className="flex items-center mt-1">
+                  <Skeleton className="h-4 w-4 rounded-full mr-1" />
+                  <Skeleton className="h-4 w-32" />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center space-x-2">
+                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {session?.user?.name || fullName} 
+                  </h2>
+                  {session?.user?.role === "SALLER" ?  (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                      <ShieldCheck className="h-4 w-4 mr-1" />
+                      Verified
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                      <OctagonAlert className="h-4 w-4 mr-1" />
+                      Not Verified
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                  <Mail className="h-4 w-4 mr-1" />
+                  <span>{session?.user?.email}</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
 

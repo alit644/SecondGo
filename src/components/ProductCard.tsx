@@ -13,14 +13,8 @@ import { Button } from "./ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import MAvatar from "./shared/MAvatar";
-import { Prisma } from "@prisma/client";
-type ListingWithUser = Prisma.ListingGetPayload<{
-  include: { user: { select: { image: true; id: true; name: true } } };
-}>;
+import { IProductCard } from "@/utils/types";
 
-interface IProductCard {
-  listing: ListingWithUser;
-}
 const ProductCard = ({ listing }: IProductCard) => {
   return (
     <motion.div

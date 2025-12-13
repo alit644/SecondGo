@@ -22,16 +22,14 @@ const DeleteProductModal = ({ id }: { id: string }) => {
       setIsLoading(true);
 
       const result = await deleteListingAction(id);
-      console.log(result);
       if (result.success) {
         router.back();
-        notify(result.message, "success");
+        notify(result.message || "Listing deleted successfully", "success");
       } else {
-        notify(result.message, "error");
+        notify(result.message || "Something went wrong", "error");
       }
     } catch (error) {
       notify("Something went wrong", "error");
-      console.log(error);
     } finally {
       setIsLoading(false);
     }

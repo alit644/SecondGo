@@ -18,7 +18,7 @@ interface IProductsCard {
   data: Listing[];
 }
 const MyProductsCard = ({ data }: IProductsCard) => {
-  const listings = data?.map((p: Listing) => {
+  const listings = data?.map((p) => {
     return (
       <TableRow key={p.id}>
         <TableCell>
@@ -28,6 +28,7 @@ const MyProductsCard = ({ data }: IProductsCard) => {
                 src={p.image[0] || "/no-image.jpg"}
                 alt={`${p.title} product image`}
                 fill
+                priority={false}
                 sizes="48px"
                 className="object-cover select-none pointer-events-none"
               />

@@ -8,15 +8,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-interface IPagination {
-  meta: {
-    count: number;
-    page: number;
-    postPerPage: number;
-    totalPages: number;
-  };
-}
-const PaginationDemo = ({ meta }: IPagination) => {
+import { PaginationMeta } from "@/utils/types";
+
+const PaginationDemo = ({ meta }: { meta: PaginationMeta }) => {
+
   const { page, totalPages } = meta;
 
   const getPageNumbers = () => {

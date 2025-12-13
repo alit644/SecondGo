@@ -68,7 +68,6 @@ const NewListingForm = ({ mode, initialData, id }: ListingFormProps) => {
         notify(result?.message, "error");
       }
     } catch (error: any) {
-      console.log(error);
       notify(
         error?.message || "Internal Server Error , Please try again later",
         "error"

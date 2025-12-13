@@ -6,15 +6,14 @@ import { Button } from "@/components/ui/button";
 import { InfiniteMovingCardsDemo } from "@/components/InfiniteCategoryCardsDemo";
 import { getPublicListings } from "@/actions/listing-action";
 import ErrorState from "@/components/shared/ErrorState";
-export const revalidate = 120;
-export const dynamic = "force-static";
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "SecondGo - Home",
   description: "Home page",
 };
 export default async function Home() {
-  const { data: listings, success, message } = await getPublicListings();
+  const result = await getPublicListings();
   return (
     <main>
       <div className="relative">
@@ -23,14 +22,17 @@ export default async function Home() {
         <InfiniteMovingCardsDemo />
       </div>
       {/* not show if success is false */}
-      {!success ? (
+       {/* Error State */}
+      {!result.success && (
         <ErrorState
-          message={message || "Something went wrong. Please try again later."}
+          message={result.message}
         />
-      ) : (
+      )}
+      {/* Success State */}
+      {result.success && (
         <div>
           <div className="grid gap-4 xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 mb-6">
-            {listings?.map((listing) => (
+            {result?.data?.map((listing) => (
               <ProductCard key={listing.id} listing={listing} />
             ))}
           </div>

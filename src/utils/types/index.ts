@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Prisma } from "@prisma/client";
 import { ListingSchema } from "../schema";
 
 export interface RegisterInput {
@@ -15,9 +16,19 @@ export interface AuthResponse {
     message: string;
     data?: any;
 }
-export interface Listing extends ListingSchema {
-    id: string;
-    status: "Active" | "INACTIVE" | "SOLD" | "DELETED";
-    createdAt: Date;
-    updatedAt: Date;
+
+
+export type ListingWithUser = Prisma.ListingGetPayload<{
+  include: { user: { select: { image: true; id: true; name: true } } };
+}>;
+
+export interface IProductCard {
+  listing: ListingWithUser;
 }
+
+export type PaginationMeta = {
+  count: number;
+  page: number;
+  postPerPage: number;
+  totalPages: number;
+};

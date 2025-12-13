@@ -10,8 +10,6 @@ const MyProductsCard = dynamic(() => import("./MyProductsCard"), {
   loading: () => <Loading />,
 });
 
-
-
 const MyListing = async ({
   page,
   userID,
@@ -19,12 +17,14 @@ const MyListing = async ({
   page: number;
   userID: string;
 }) => {
-  //TODO : عند الضغط على الازار PaginationDemo مع  builed سلوك غريب يحدث عند عملية  
   const result = await getUserData(userID, page);
-
   if (!result?.success) {
     return (
-      <ErrorState message={"Something went wrong. Please try again later."} />
+      <ErrorState
+        message={
+          result?.message || "Something went wrong. Please try again later.  "
+        }
+      />
     );
   }
 
@@ -66,7 +66,16 @@ const MyListing = async ({
         <>
           <MyProductsCard data={result?.data || []} />
           <div className="flex justify-center my-4">
-            <PaginationDemo meta={result?.meta} />
+            <PaginationDemo
+              meta={
+                result?.meta || {
+                  count: 0,
+                  page: 0,
+                  postPerPage: 0,
+                  totalPages: 0,
+                }
+              }
+            />{" "}
           </div>
         </>
       )}

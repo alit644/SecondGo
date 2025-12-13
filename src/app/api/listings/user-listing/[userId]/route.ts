@@ -13,35 +13,41 @@ export async function GET(
   try {
     const pageNum = req.nextUrl.searchParams.get("page") || "1";
     const POST_PER_PAGE = 1;
-    const listings = await prisma.listing.findMany({
-      where: { userId },
-      orderBy: { createdAt: "desc" },
-      skip: (parseInt(pageNum) - 1) * POST_PER_PAGE,
-      take: POST_PER_PAGE,
-    });
-    //! listings Count for userId
-    const count = await prisma.listing.count({
-      where: { userId },
-    });
+
+    const [listings, count] = await Promise.all([
+      prisma.listing.findMany({
+        where: { userId },
+        orderBy: { createdAt: "desc" },
+        skip: (parseInt(pageNum) - 1) * POST_PER_PAGE,
+        take: POST_PER_PAGE,
+      }),
+      prisma.listing.count({
+        where: { userId },
+      }),
+    ]);
 
     return NextResponse.json(
-      {
-        success: true,
-        data: listings,
-        meta: {
-          count,
-          page: parseInt(pageNum),
-          postPerPage: POST_PER_PAGE,
-          totalPages: Math.ceil(count / POST_PER_PAGE),
-        },
-      },
-      { status: 200 }
-    );
+  {
+    success: true,
+    data: listings,
+    meta: {
+      count,
+      page: parseInt(pageNum),
+      postPerPage: POST_PER_PAGE,
+      totalPages: Math.ceil(count / POST_PER_PAGE),
+    },
+  },
+  { status: 200 }
+);
+
   } catch (error: any) {
-    return NextResponse.json({
-      statusText: error?.message || "error",
-      status: 500,
-      message: "Internal Server Error",
-    });
+    return NextResponse.json(
+      
+    {
+      success: false,
+      message: error?.message || "Internal Server Error",
+    },
+    { status: 500 }
+    );
   }
 }

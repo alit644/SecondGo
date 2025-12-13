@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { prisma } from "@/utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -22,24 +21,33 @@ export async function GET(
 
     if (!listings) {
       return NextResponse.json(
-        { success: false, message: "Listing not found" },
+        {
+          success: false,
+          message: "Listing not found",
+        },
         { status: 404 }
       );
     }
 
     return NextResponse.json(
       {
-        status: 200 ,
-        message: "Listings fetched successfully",
         success: true,
+        message: "Listing fetched successfully",
         data: listings,
       },
+      {
+        status: 200,
+      }
     );
   } catch (error: any) {
-    return NextResponse.json({
-      statusText: error?.message || "error",
-      status: 500,
-      message: "Internal Server Error",
-    });
+    return NextResponse.json(
+      {
+        success: false,
+        message: error?.message || "Internal Server Error",
+      },
+      {
+        status: 500,
+      }
+    );
   }
 }

@@ -40,7 +40,6 @@ export const verifyTokenAction = async (token: string) => {
     });
     return { success: true, message: "User verified successfully" };
   } catch (error: any) {
-    console.log(error);
     return {
       success: false,
       message: error?.message || "something went wrong",

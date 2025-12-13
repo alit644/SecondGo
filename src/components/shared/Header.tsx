@@ -8,10 +8,12 @@ import { useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Skeleton } from "../ui/skeleton";
 const Header = () => {
   const { data: session, status } = useSession();
   // get pathname
   const pathname = usePathname();
+
   return (
     <section className=" flex z-50 items-center bg-background justify-between shadow-md  border-b border-input px-4 h-16 ">
       {/* logo */}
@@ -30,7 +32,9 @@ const Header = () => {
               </Link>
             </Button>
           ) : null
-        ) : status === "loading" ? null : pathname === "/login" ? null : (
+        ) : status === "loading" ? (
+          <Skeleton className="h-9 w-9 rounded-md" />
+        ) : pathname === "/login" ? null : (
           <Button variant={"outline"} aria-label="login" title="login">
             <Link href="/login">Login</Link>
           </Button>
@@ -43,3 +47,4 @@ const Header = () => {
 };
 
 export default Header;
+

@@ -29,7 +29,6 @@ export const updateAccountAction = async (formdata: FormData) => {
           .join(", "),
       };
     }
-    console.log(validationData);
 
     await prisma.user.update({
       where: { id: session?.user.id },
@@ -45,7 +44,6 @@ export const updateAccountAction = async (formdata: FormData) => {
 
     return { success: true, message: "Profile updated" };
   } catch (error: any) {
-    console.log(error);
     return {
       success: false,
       message:
@@ -68,7 +66,6 @@ export const uploadAvatarAction = async (formData: FormData) => {
     const path = `avatar/${session?.user.id}/${fileName}`;
     const { error } = await supabase.storage.from("avatar").upload(path, file);
     if (error) {
-      console.log(error);
       return { success: false, message: "Upload failed" };
     } // get the url of the uploaded image
 
@@ -83,7 +80,6 @@ export const uploadAvatarAction = async (formData: FormData) => {
     revalidatePath("/profile");
     return { success: true, message: "Avatar uploaded", url: publicUrl };
   } catch (error: any) {
-    console.log(error);
     return {
       success: false,
       message:
